@@ -46,11 +46,25 @@ namespace Community.Powertoys.Run.Plugin.BrowserSearch
         private long _lastUpdateTickCount = -300L;
         private int _maxResults;
         private string? _selectedProfileName;
+        private string IconPath {get; set;}
 
         public void Init(PluginInitContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            UpdateIconPath(_context.API.GetCurrentTheme());
             InitDefaultBrowser();
+        }
+
+        private void UpdateIconPath(Theme theme)
+        {
+            if (theme == Theme.Light || theme == Theme.HighContrastWhite)
+            {
+                IconPath = "images/History.light.svg";
+            }
+            else
+            {
+                IconPath = "images/History.dark.svg";
+            }
         }
 
         public void ReloadData()
