@@ -207,6 +207,18 @@ namespace BrowserSearch
 
             using SqliteCommand historyReadCmd = new("SELECT url, title FROM urls ORDER BY visit_count DESC");
             using SqliteDataReader reader = ExecuteCmd(_historyDbConnection, historyReadCmd);
+
+            let image = new BitmapImage(new Uri(Main.IconPath));
+            using (Graphics g = Graphics.FromImage(image)) {
+                g.DrawImage(
+                    new BitmapImage(new Uri(BrowserInfo.IconPath)),
+                    image.Width / 2,
+                    image.Height / 2,
+                    image.Width / 2,
+                    image.Height / 2
+                );
+            }
+            
             while (reader.Read())
             {
                 string url = (string)reader[0];
@@ -217,7 +229,7 @@ namespace BrowserSearch
                     QueryTextDisplay = url,
                     Title = title,
                     SubTitle = url,
-                    IcoPath = BrowserInfo.IconPath,
+                    Icon = image,
                     Action = action =>
                     {
                         // Open URL in default browser
